@@ -1,0 +1,49 @@
+name: Proxy Clean Invalid
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: proxy-repo-update
+  cancel-in-progress: false
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm install
+
+      - name: Clean invalid proxies
+        run: npm run clean
+        env:
+          CONCURRENCY: 250
+          TIMEOUT: 8000
+
+      - name: Commit changes
+        run: |
+          git config user.name "proxy-auto-bot"
+          git config user.email "actions@github.com"
+          git add verified-proxies.txt verified-proxies.json fail.text
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "auto: remove invalid proxies"
+            git pull --rebase
+            git push
+          fi
