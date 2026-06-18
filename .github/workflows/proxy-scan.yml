@@ -32,8 +32,8 @@ jobs:
       - name: Scan new proxies
         run: npm run scan
         env:
-          CONCURRENCY: 250
-          TIMEOUT: 8000
+          CONCURRENCY: 500
+          TIMEOUT: 5000
           MAX_SCAN_TEST: 3000
 
       - name: Commit changes
