@@ -32,8 +32,8 @@ jobs:
       - name: Clean invalid proxies
         run: npm run clean
         env:
-          CONCURRENCY: 250
-          TIMEOUT: 8000
+          CONCURRENCY: 500
+          TIMEOUT: 5000
 
       - name: Commit changes
         run: |
