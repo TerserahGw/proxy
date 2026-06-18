@@ -13,9 +13,9 @@ const OUT_JSON = path.join(ROOT, "verified-proxies.json");
 const FAIL_LOG = path.join(ROOT, "fail.text");
 
 const TEST_URL = process.env.TEST_URL || "https://api.ipify.org?format=json";
-const TIMEOUT = Number(process.env.TIMEOUT || 8000);
-const CONCURRENCY = Number(process.env.CONCURRENCY || 250);
-const MAX_SCAN_TEST = Number(process.env.MAX_SCAN_TEST || 3000);
+const TIMEOUT = Number(process.env.TIMEOUT || 5000);
+const CONCURRENCY = Number(process.env.CONCURRENCY || 500);
+const MAX_SCAN_TEST = Number(process.env.MAX_SCAN_TEST || 1200);
 
 const SOURCES = [
   {
@@ -76,6 +76,16 @@ const SOURCES = [
 
 function nowIso() {
   return new Date().toISOString();
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr;
 }
 
 function ensureFile(file, value = "") {
@@ -432,7 +442,7 @@ async function scanNewProxies() {
     if (!candidateMap.has(item.proxy)) candidateMap.set(item.proxy, item);
   }
 
-  let candidates = [...candidateMap.values()];
+  let candidates = shuffleArray([...candidateMap.values()]);
 
   if (candidates.length > MAX_SCAN_TEST) {
     candidates = candidates.slice(0, MAX_SCAN_TEST);
