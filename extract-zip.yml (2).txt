@@ -1,0 +1,215 @@
+name: Extract ZIP Project
+
+"on":
+  workflow_dispatch:
+    inputs:
+      zip_name:
+        description: "Nama file ZIP di root repository. Kosongkan untuk auto-detect jika hanya ada satu ZIP."
+        required: false
+        default: "ChioriyaSSWeb.zip"
+      remove_zip:
+        description: "Hapus ZIP setelah berhasil diekstrak"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      clean_root:
+        description: "Bersihkan file lama di root repo sebelum copy hasil extract"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+  push:
+    paths:
+      - "*.zip"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: extract-zip-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Prepare unzip
+        run: |
+          set -euo pipefail
+          if ! command -v unzip >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y unzip
+          fi
+
+      - name: Resolve ZIP file
+        id: zip
+        env:
+          DEFAULT_ZIP_NAME: ChioriyaSSWeb.zip
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ZIP_NAME: ${{ github.event.inputs.zip_name }}
+        run: |
+          set -euo pipefail
+
+          ZIP_NAME="${INPUT_ZIP_NAME:-}"
+          if [ -z "$ZIP_NAME" ]; then
+            ZIP_NAME="$DEFAULT_ZIP_NAME"
+          fi
+
+          mapfile -t ZIP_FILES < <(find . -maxdepth 1 -type f -iname "*.zip" -printf "%f\n" | sort)
+
+          if [ -f "$ZIP_NAME" ]; then
+            SELECTED_ZIP="$ZIP_NAME"
+          elif [ "${#ZIP_FILES[@]}" -eq 1 ]; then
+            SELECTED_ZIP="${ZIP_FILES[0]}"
+          elif [ "${#ZIP_FILES[@]}" -eq 0 ]; then
+            echo "Tidak ada file ZIP di root repository."
+            if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+              exit 1
+            fi
+            echo "Push ini dilewati karena tidak ada ZIP yang perlu diekstrak."
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          else
+            echo "Ada lebih dari satu ZIP di root repository. Jalankan manual workflow_dispatch dan isi zip_name."
+            printf 'ZIP yang ditemukan:\n'
+            printf -- '- %s\n' "${ZIP_FILES[@]}"
+            exit 1
+          fi
+
+          echo "ZIP terpilih: $SELECTED_ZIP"
+          echo "zip_name=$SELECTED_ZIP" >> "$GITHUB_OUTPUT"
+          echo "should_run=true" >> "$GITHUB_OUTPUT"
+
+      - name: Validate ZIP
+        if: steps.zip.outputs.should_run == 'true'
+        run: |
+          set -euo pipefail
+          unzip -t "${{ steps.zip.outputs.zip_name }}"
+
+      - name: Extract ZIP to temp folder
+        if: steps.zip.outputs.should_run == 'true'
+        run: |
+          set -euo pipefail
+          rm -rf __extract_zip_tmp __project_copy_tmp
+          mkdir -p __extract_zip_tmp
+          unzip -o "${{ steps.zip.outputs.zip_name }}" -d __extract_zip_tmp
+
+      - name: Detect project folder
+        if: steps.zip.outputs.should_run == 'true'
+        id: project
+        run: |
+          set -euo pipefail
+
+          PACKAGE_FILE="$(find __extract_zip_tmp -name package.json -type f -not -path "*/node_modules/*" -print -quit || true)"
+
+          if [ -z "$PACKAGE_FILE" ]; then
+            echo "package.json tidak ditemukan di dalam ZIP. Pastikan ZIP berisi project Node.js/Vercel."
+            exit 1
+          fi
+
+          PROJECT_DIR="${PACKAGE_FILE%/package.json}"
+          echo "Project ditemukan di: $PROJECT_DIR"
+          echo "project_dir=$PROJECT_DIR" >> "$GITHUB_OUTPUT"
+
+      - name: Copy project to staging
+        if: steps.zip.outputs.should_run == 'true'
+        run: |
+          set -euo pipefail
+          PROJECT_DIR="${{ steps.project.outputs.project_dir }}"
+
+          rm -rf __project_copy_tmp
+          mkdir -p __project_copy_tmp
+          cp -a "$PROJECT_DIR"/. __project_copy_tmp/
+
+          rm -rf __project_copy_tmp/.git
+          rm -f __project_copy_tmp/.github/workflows/extract-zip.yml
+
+      - name: Clean old root files
+        if: steps.zip.outputs.should_run == 'true' && (github.event_name == 'push' || github.event.inputs.clean_root == 'true')
+        run: |
+          set -euo pipefail
+          ZIP_NAME="${{ steps.zip.outputs.zip_name }}"
+
+          shopt -s dotglob nullglob
+          for item in * .[^.]* ..?*; do
+            case "$item" in
+              .|..|.git|.github|__extract_zip_tmp|__project_copy_tmp|"$ZIP_NAME")
+                continue
+                ;;
+            esac
+            rm -rf -- "$item"
+          done
+
+      - name: Move extracted files to repository root
+        if: steps.zip.outputs.should_run == 'true'
+        run: |
+          set -euo pipefail
+          cp -a __project_copy_tmp/. .
+
+      - name: Update gitignore
+        if: steps.zip.outputs.should_run == 'true'
+        run: |
+          set -euo pipefail
+          touch .gitignore
+          cat > /tmp/chioriya-gitignore-extra <<'EOF_IGNORE'
+          node_modules
+          .next
+          dist
+          build
+          .env
+          .env.local
+          .env.*.local
+          .vercel
+          .DS_Store
+          npm-debug.log*
+          yarn-debug.log*
+          yarn-error.log*
+          pnpm-debug.log*
+          EOF_IGNORE
+          sed -i 's/^          //' /tmp/chioriya-gitignore-extra
+          cat .gitignore /tmp/chioriya-gitignore-extra | awk 'NF && !seen[$0]++' > /tmp/chioriya-gitignore-final
+          mv /tmp/chioriya-gitignore-final .gitignore
+
+      - name: Remove ZIP and temp folders
+        if: steps.zip.outputs.should_run == 'true'
+        env:
+          REMOVE_ZIP: ${{ github.event.inputs.remove_zip }}
+        run: |
+          set -euo pipefail
+          rm -rf __extract_zip_tmp __project_copy_tmp
+
+          REMOVE_ZIP="${REMOVE_ZIP:-true}"
+          if [ "$REMOVE_ZIP" = "true" ]; then
+            rm -f "${{ steps.zip.outputs.zip_name }}"
+          fi
+
+      - name: Commit extracted project
+        if: steps.zip.outputs.should_run == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "Tidak ada perubahan untuk commit."
+            exit 0
+          fi
+
+          git commit -m "Extract project from ZIP"
+          git push
