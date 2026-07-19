@@ -1,121 +1,64 @@
-TOTAL_PROXY=380
-TOTAL_VALID=264
-TOTAL_FAIL=116
-CHECKED_AT=2026-07-19T08:19:20.227Z
+TOTAL_PROXY=264
+TOTAL_VALID=205
+TOTAL_FAIL=59
+CHECKED_AT=2026-07-19T10:39:04.840Z
 
-1. socks5://47.251.127.154:1080 | ECONNABORTED
-2. socks4://50.238.47.86:32100 | Proxy connection timed out
-3. http://82.86.112.48:999 | ETIMEDOUT
-4. http://79.106.229.115:8989 | ETIMEDOUT
-5. http://36.50.92.145:8080 | ETIMEDOUT
-6. http://129.226.206.61:80 | ERR_BAD_REQUEST
-7. socks5://144.124.232.204:443 | Socks5 proxy rejected connection - Failure
-8. http://103.160.182.35:8080 | ETIMEDOUT
-9. socks5://119.148.7.10:22122 | Proxy connection timed out
-10. socks4://177.66.43.189:4145 | read ECONNRESET
-11. socks5://79.137.207.236:1080 | connect ECONNREFUSED 79.137.207.236:1080
-12. socks4://193.158.12.140:4153 | Proxy connection timed out
-13. http://104.248.151.93:9090 | ECONNRESET
-14. socks4://189.203.181.34:1080 | Proxy connection timed out
-15. http://187.190.58.152:8081 | ETIMEDOUT
-16. http://49.146.145.189:8082 | ETIMEDOUT
-17. http://188.170.129.101:3128 | ETIMEDOUT
-18. socks4://200.105.252.170:5678 | Proxy connection timed out
-19. socks4://95.182.107.210:1080 | Proxy connection timed out
-20. socks4://117.4.26.246:1080 | Proxy connection timed out
-21. socks4://89.185.80.250:1081 | ECONNABORTED
-22. socks5://206.123.156.228:5973 | connect ECONNREFUSED 206.123.156.228:5973
-23. http://88.247.177.8:3310 | ECONNABORTED
-24. socks4://159.195.61.240:1080 | Socket closed
-25. socks4://103.55.106.150:1080 | Socket closed
-26. socks4://64.225.42.129:3001 | connect ECONNREFUSED 64.225.42.129:3001
-27. socks4://109.224.12.170:52015 | read ECONNRESET
-28. socks5://112.28.149.156:8443 | Socks5 proxy rejected connection - Failure
-29. socks5://8.218.31.231:1080 | connect ECONNREFUSED 8.218.31.231:1080
-30. socks5://206.123.156.223:7516 | connect ECONNREFUSED 206.123.156.223:7516
-31. http://181.40.18.42:999 | ETIMEDOUT
-32. socks4://14.241.241.185:4145 | Proxy connection timed out
-33. http://49.148.4.172:8081 | ETIMEDOUT
-34. socks4://103.102.141.40:4145 | Proxy connection timed out
-35. socks4://147.45.60.110:1082 | Proxy connection timed out
-36. socks5://78.159.131.131:1082 | ECONNABORTED
-37. http://90.181.120.18:8082 | Proxy connection ended before receiving CONNECT response
-38. socks5://206.123.156.223:4869 | connect ECONNREFUSED 206.123.156.223:4869
-39. http://126.209.16.133:8082 | ETIMEDOUT
-40. http://103.162.17.207:8080 | ETIMEDOUT
-41. socks5://206.123.156.223:6361 | Proxy connection timed out
-42. socks5://103.161.104.96:1080 | Proxy connection timed out
-43. socks5://206.123.156.202:6134 | connect ECONNREFUSED 206.123.156.202:6134
-44. socks4://147.45.60.252:1081 | ECONNABORTED
-45. http://113.192.1.162:8181 | ECONNABORTED
-46. http://177.20.167.139:8080 | ETIMEDOUT
-47. socks4://217.169.223.18:1080 | Proxy connection timed out
-48. http://190.97.239.16:999 | ETIMEDOUT
-49. http://103.18.79.189:8082 | ETIMEDOUT
-50. http://45.177.16.133:999 | ETIMEDOUT
-51. socks5://95.140.154.156:1080 | ECONNABORTED
-52. socks5://152.53.209.196:1080 | Socks5 proxy rejected connection - NetworkUnreachable
-53. socks5://147.45.60.246:1081 | Proxy connection timed out
-54. socks5://141.147.109.224:1080 | Proxy connection timed out
-55. socks4://46.188.2.42:5678 | Proxy connection timed out
-56. socks4://147.45.60.110:1081 | ECONNABORTED
-57. socks5://89.185.80.251:1082 | ECONNABORTED
-58. http://103.171.183.245:8080 | ETIMEDOUT
-59. http://190.89.29.110:999 | ETIMEDOUT
-60. socks5://62.133.62.187:1081 | ECONNABORTED
-61. socks5://206.123.156.223:4954 | Proxy connection timed out
-62. socks5://43.130.38.45:51029 | Proxy connection timed out
-63. socks4://147.15.17.132:1092 | Socket closed
-64. http://201.140.209.33:3128 | ETIMEDOUT
-65. http://164.163.73.5:999 | ETIMEDOUT
-66. socks4://141.105.107.152:5678 | Proxy connection timed out
-67. socks4://62.133.62.184:1082 | ECONNABORTED
-68. socks5://206.123.156.228:9345 | Proxy connection timed out
-69. http://45.174.253.9:999 | ETIMEDOUT
-70. http://160.22.134.63:1111 | ECONNRESET
-71. http://191.102.254.70:8085 | ETIMEDOUT
-72. socks5://178.130.47.41:1082 | ECONNABORTED
-73. http://119.82.242.200:8080 | ETIMEDOUT
-74. http://38.7.21.116:999 | ECONNREFUSED
-75. http://106.51.185.233:8080 | ETIMEDOUT
-76. http://179.1.113.129:999 | ETIMEDOUT
-77. socks4://178.130.47.21:1081 | Proxy connection timed out
-78. http://157.20.207.74:3127 | ETIMEDOUT
-79. socks5://103.197.241.209:1080 | Proxy connection timed out
-80. socks5://178.215.236.16:1080 | Proxy connection timed out
-81. http://177.135.190.101:8080 | ETIMEDOUT
-82. socks4://34.124.190.108:8080 | Socket closed
-83. http://45.224.22.63:999 | ETIMEDOUT
-84. socks5://206.123.156.202:10762 | Proxy connection timed out
-85. http://182.160.106.146:12331 | ETIMEDOUT
-86. socks4://38.242.156.163:9050 | Proxy connection timed out
-87. socks5://160.250.54.4:9000 | Proxy connection timed out
-88. socks5://206.123.156.225:5673 | connect ECONNREFUSED 206.123.156.225:5673
-89. http://156.230.187.234:8081 | ETIMEDOUT
-90. http://45.170.102.17:999 | ETIMEDOUT
-91. http://103.177.8.119:8080 | ETIMEDOUT
-92. http://165.101.43.67:8080 | ETIMEDOUT
-93. socks4://23.133.196.5:9000 | Proxy connection timed out
-94. socks5://206.123.156.225:5091 | Proxy connection timed out
-95. http://45.71.186.213:999 | ETIMEDOUT
-96. socks4://45.95.232.35:1080 | ECONNABORTED
-97. http://45.71.186.214:999 | ETIMEDOUT
-98. socks5://206.123.156.231:7932 | Proxy connection timed out
-99. socks4://38.54.51.14:30001 | ECONNRESET
-100. http://138.117.13.129:999 | ETIMEDOUT
-101. socks4://103.87.81.86:5678 | Proxy connection timed out
-102. http://131.222.251.70:8080 | ETIMEDOUT
-103. http://162.4.38.23:8080 | ETIMEDOUT
-104. socks5://206.123.156.231:8030 | Proxy connection timed out
-105. http://141.98.197.248:3128 | ECONNRESET
-106. http://185.166.24.221:1976 | ETIMEDOUT
-107. socks5://206.123.156.228:4141 | Proxy connection timed out
-108. http://177.93.49.170:8888 | ETIMEDOUT
-109. socks5://198.23.196.100:1080 | connect ECONNREFUSED 198.23.196.100:1080
-110. http://177.93.49.171:8888 | ETIMEDOUT
-111. http://161.49.87.222:8095 | ETIMEDOUT
-112. http://160.19.18.127:8181 | ETIMEDOUT
-113. http://185.18.52.170:3128 | ETIMEDOUT
-114. http://180.191.16.9:8085 | ETIMEDOUT
-115. http://24.106.221.230:53281 | ETIMEDOUT
-116. http://45.71.186.210:999 | ETIMEDOUT
+1. http://34.94.46.8:80 | ERR_BAD_RESPONSE
+2. http://37.58.221.247:3128 | ETIMEDOUT
+3. socks4://147.15.17.132:1094 | Socks4 Proxy rejected connection - (Failed)
+4. http://45.177.16.136:999 | ETIMEDOUT
+5. socks5://65.109.191.98:3080 | Proxy connection timed out
+6. socks5://193.221.203.192:1080 | read ECONNRESET
+7. socks4://77.83.246.110:2000 | ECONNRESET
+8. http://49.150.254.143:8081 | ETIMEDOUT
+9. http://103.125.17.106:8080 | ETIMEDOUT
+10. socks5://194.59.186.35:1080 | ECONNABORTED
+11. socks4://23.133.196.13:9000 | Proxy connection timed out
+12. socks5://82.97.246.229:1080 | Proxy connection timed out
+13. http://8.243.175.14:999 | ETIMEDOUT
+14. http://148.230.15.185:999 | ETIMEDOUT
+15. socks5://5.255.99.75:1080 | read ECONNRESET
+16. socks5://130.49.187.61:1082 | Proxy connection timed out
+17. socks5://62.133.62.17:1081 | Proxy connection timed out
+18. http://103.172.42.81:8080 | ETIMEDOUT
+19. http://101.36.109.77:8118 | ECONNABORTED
+20. socks4://83.219.1.130:5678 | Proxy connection timed out
+21. socks4://213.176.113.24:50001 | read ECONNRESET
+22. socks4://117.54.113.93:4145 | Proxy connection timed out
+23. socks4://103.149.75.82:1080 | Proxy connection timed out
+24. http://38.156.14.131:999 | ETIMEDOUT
+25. http://179.48.25.1:8095 | ETIMEDOUT
+26. http://140.227.202.251:3128 | ETIMEDOUT
+27. socks5://89.185.80.69:1082 | Proxy connection timed out
+28. socks5://104.161.23.122:5003 | Proxy connection timed out
+29. socks4://123.253.124.28:5678 | Proxy connection timed out
+30. socks4://31.13.239.4:5678 | Proxy connection timed out
+31. socks5://206.123.156.228:5733 | Proxy connection timed out
+32. socks4://89.185.80.69:1082 | ECONNABORTED
+33. http://79.133.66.110:81 | ETIMEDOUT
+34. http://103.145.45.237:8090 | ETIMEDOUT
+35. socks4://46.219.1.20:5678 | read ECONNRESET
+36. http://45.95.232.35:3128 | ECONNRESET
+37. socks5://206.123.156.228:5183 | Proxy connection timed out
+38. socks4://95.31.245.3:3629 | ECONNABORTED
+39. socks4://89.132.170.211:4145 | Proxy connection timed out
+40. http://157.66.50.147:8080 | ECONNRESET
+41. http://195.158.8.123:3128 | ETIMEDOUT
+42. socks5://206.123.156.228:6947 | connect ECONNREFUSED 206.123.156.228:6947
+43. socks5://43.129.80.138:18999 | Proxy connection timed out
+44. socks4://210.2.149.187:1080 | Proxy connection timed out
+45. http://45.65.137.218:999 | ETIMEDOUT
+46. socks4://193.105.62.11:58973 | Proxy connection timed out
+47. socks5://5.255.113.177:1080 | ECONNABORTED
+48. http://45.239.48.102:999 | ECONNRESET
+49. http://103.166.185.54:3128 | ETIMEDOUT
+50. http://103.120.174.75:1818 | ETIMEDOUT
+51. socks5://124.156.185.140:1080 | Proxy connection timed out
+52. socks5://168.119.173.104:41346 | Proxy connection timed out
+53. socks5://96.30.197.251:1080 | Proxy connection timed out
+54. socks5://152.32.217.35:10808 | Proxy connection timed out
+55. http://3.15.101.97:443 | ETIMEDOUT
+56. http://201.71.137.90:5128 | ETIMEDOUT
+57. http://62.133.60.5:3128 | ETIMEDOUT
+58. http://45.65.138.48:999 | ETIMEDOUT
+59. http://121.101.130.173:8080 | ECONNRESET
